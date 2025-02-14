@@ -1,0 +1,117 @@
+Git Task: 
+
+
+Task 1:
+Implementing a Feature Using Git Flow
+
+Scenario: User Login System
+Develop a User Login System for a banking app using Git Flow, creating and managing branches manually.
+tip: all merges should be done by open PR (Pull Request)
+
+Task Steps
+
+Step 1: Set Up Repository
+
+Clone the repository
+
+Initialize version control
+
+Create main and development branches
+
+put file f1 on them
+
+---
+Step 2: Feature Branch
+
+Create a new branch from the development branch for the login feature
+
+Add 'Implement the login functionality' in f1
+
+Commit and push changes to the feature branch
+
+---
+Step 3: Merge Conflict
+
+Modify the same file in both the development branch and the feature branch
+
+Attempt to merge the feature branch into development
+
+Resolve conflicts manually and commit
+
+---
+Step 4: Merge Feature
+
+Merge the feature branch into the development branch and keep the commit history clear
+
+Delete the feature branch after merging
+
+---
+Step 5: Release Feature
+
+Create a release branch from the development branch
+
+---
+Step 7 :
+Go to feature branch and Add 3 commits:
+Add 'Case 1' in f1
+Add 'Case 2' in f1
+Add 'Case 3' in f1
+
+---
+Step 8 :
+Go Back to the Release branch 
+
+Merge only Case1 and case2 to the release branch  
+
+Merge the release branch into the main branch
+
+Merge the release branch back into the development branch
+
+Delete the release branch after merging
+
+---
+Step 9: Hotfix
+
+Identify and fix a security issue in the login system
+
+Create a hotfix branch from the main branch
+
+Apply the fix and commit changes
+
+Merge the hotfix branch into both the main and development branches
+
+Delete the hotfix branch after merging
+
+---
+Step 10: Debugging
+
+Check commit history
+
+delete case2 Commit from development branch
+
+===
+Task 2:
+
+You are working on a new feature but need to switch branches to fix a bug. You haven't committed your changes yet and don't want to lose them.
+
+Task Steps
+
+Explain what git stash does and when it is useful.
+
+Use git stash to temporarily save uncommitted changes.
+
+List and describe the stashed changes.
+
+Restore stashed changes using the appropriate command.
+
+Apply and remove a specific stash.
+
+Drop or clear all stashes from the stash list.
+
+What happens when you use git stash pop vs git stash apply?
+
+What is the purpose of git stash save "message"?
+
+How can you stash changes for specific files instead of the entire working directory?
+
+How can you check which files were affected in a particular stash?
