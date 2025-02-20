@@ -1,0 +1,44 @@
+---
+- name: Configure Frontend Machine
+  hosts: frontend
+  become: yes
+  tasks:
+    - name: Check Memory Requirement
+      command: free -m | awk '/Mem:/ {print $2}'
+      register: memory
+      failed_when: memory.stdout|int < 1024
+
+    - name: Install NGINX (Only for Ubuntu)
+      apt:
+        name: nginx
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install Packages (vim, curl, git)
+      apt:
+        name:
+          - vim
+          - curl
+          - git
+        state: present
+      loop:
+        - vim
+        - curl
+        - git
+
+    - name: Deploy Web Page
+      copy:
+        content: "<h1>Welcome to Ansible-Managed Frontend</h1>"
+        dest: /var/www/html/index.html
+
+    - name: Restart NGINX if Config Changes
+      service:
+        name: nginx
+        state: restarted
+      listen: "restart nginx"
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

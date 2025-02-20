@@ -1,0 +1,5 @@
+ssh-keygen -t rsa -b 4096
+ssh-copy-id user@frontend-machine
+ssh-copy-id user@docker-machine
+ssh user@frontend-machine
+ssh user@docker-machine
