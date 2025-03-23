@@ -1,0 +1,10 @@
+{
+    "name": "DevOps Environment",
+    "image": "mcr.microsoft.com/devcontainers/python",
+    "features": {
+      "terraform": "latest",
+      "aws-cli": "latest"
+    },
+    "postCreateCommand": "terraform --version && ansible --version && aws --version"
+  }
+  

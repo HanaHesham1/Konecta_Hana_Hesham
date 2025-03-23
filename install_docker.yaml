@@ -1,0 +1,34 @@
+- name: Install Docker and Deploy Jenkins
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+
+    - name: Add Docker GPG key
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+    - name: Add Docker repo
+      shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Install Jenkins (CICD only)
+      when: "'CICD-Machine' in inventory_hostname"
+      shell: docker run -d --name jenkins -p 8080:8080 jenkins/jenkins:lts
