@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    environment {
+        REGISTRY_URL = 'my-private-registry'
+        IMAGE_NAME = 'my-nginx-app'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-repo.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t $REGISTRY_URL/$IMAGE_NAME:latest .'
+                }
+            }
+        }
+
+        stage('Push to Registry') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: 'docker-hub-credentials', url: "https://$REGISTRY_URL"]) {
+                        sh 'docker push $REGISTRY_URL/$IMAGE_NAME:latest'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                script {
+                    sshagent(['prod-server-ssh']) {
+                        sh '''
+                        ssh -o StrictHostKeyChecking=no ec2-user@${PROD_SERVER_IP} << EOF
+                            docker pull $REGISTRY_URL/$IMAGE_NAME:latest
+                            docker stop my-app || true
+                            docker rm my-app || true
+                            docker run -d --name my-app -p 80:80 $REGISTRY_URL/$IMAGE_NAME:latest
+                        EOF
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    triggers {
+        githubPush()
+    }
+}
