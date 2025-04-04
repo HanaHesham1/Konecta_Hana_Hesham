@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+rule_files:
+  - alerts.yml
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'infra'
+    static_configs:
+      - targets: ['<INFRA_IP>:9100'] # Node Exporter
+      - targets: ['<INFRA_IP>:8080'] # cAdvisor
+
+  - job_name: 'app'
+    static_configs:
+      - targets: ['<APP_IP>:9100'] # Node Exporter
+      - targets: ['<APP_IP>:8080'] # cAdvisor

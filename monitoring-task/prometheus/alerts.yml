@@ -1,0 +1,20 @@
+groups:
+- name: container_alerts
+  rules:
+  - alert: ContainerDown
+    expr: up{job=~"infra|app"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Container {{ $labels.instance }} is down"
+      description: "{{ $labels.job }} container has been down for more than 1 minute."
+
+  - alert: InfraUnreachable
+    expr: up{job="infra"} == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Infra VM is unreachable"
+      description: "The Infra VM has been unreachable for more than 2 minutes."
